@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+	body { text-align:left; font-family:sans-serif; }
+	table { margin:0 auto; max-width: 85%; }
+	th, td { vertical-align:top; padding:1em; background-color:#ddd; text-align:left; }
+	th { background-color:#b0c4de; }
+	tr.notes td { background-color:#faebd7; }
+</style>
+</head>
+<body>
+
+<table>
+<thead>
+	<tr><th>C#</th><th>Objective-C</th></tr>
+</thead>
+<tbody>
+	<tr><th colspan="2">Interfaces</th></tr>
+	<tr>
+		<td><pre>
+public interface IMyClass
+{
+	void MyInstanceSubRoutine(string text);
+	string MyInstanceFunction(string text);
+}
+		</pre></td>
+		<td><pre>
+@protocol IMyClass
+
+-(void)MyInstanceSubRoutine:(NSString*)text;
+-(NSString*)MyInstanceFunction:(NSString*)text;
+
+@end
+		</pre></td>
+	</tr>
+	<tr class="notes">
+		<td colspan="2">
+			<p>Protocols in Objective-C are generally not prefixed with 'I' as with C#. additionally methods defined in protocols can be optional.
+			by segmenting the protocol definition with @optional</p>
+		</td>
+	</tr>
+	<tr><th colspan="2">Classes</th></tr>
+	<tr>
+		<td rowspan="2"><pre>
+public class MyClass : IMyClass
+{
+	public int MyInt { get; set; }
+	
+	public MyClass(int myInt)
+	{
+		this.MyInt = myInt;
+	}
+	
+	public void MyInstanceSubRoutine(string text)
+	{
+		var test = this.MyInstanceFunction(text);
+	}
+	
+	public string MyInstanceFunction(string text)
+	{
+		return text;
+	}
+	
+	public static string MyStaticFunction(string text)
+	{
+		return text;
+	}
+}
+		</pre></td>
+		<td><pre>
+#import "IMyClass.h"
+
+@interface MyClass : NSObject&lt;IMyClass&gt;
+
+@property NSNumber* myInt;
+
+-(void)MyInstanceSubRoutine:(NSString*)text;
+-(NSString*)MyInstanceFunction:(NSString*)text;
++(NSString*)MyStaticFunction:(NSString*)text;
+
+@end
+		</pre></td>
+	</tr>
+	<tr>
+		<td><pre>
+#import "MyClass.h"
+
+@implementation MyClass
+
+@synthesize myInt;
+
+-(id)initWithMyInt:(NSNumber*)myInt{
+    if ( self = [super init] ) {
+        self.myInt = myInt;
+    }
+    return self;
+}
+
+-(void)MyInstanceSubRoutine:(NSString*)text;{
+	NSString* test = [self MyInstanceFunction:text];
+}
+
+-(NSString*)MyInstanceFunction:(NSString*)text{
+	// Do something
+}
+
++(NSString*)MyStaticFunction:(NSString*)text{
+	// Do something
+}
+
+@end
+		</pre></td>
+	</tr>
+	<tr class="notes">
+		<td colspan="2">
+			<p>Classes are made up of an interface declaration in a header (.h) file and an implementation of this (.m).</p>
+		</td>
+	</tr>
+</tbody>
+</table>
+
+</body>
+</html>
