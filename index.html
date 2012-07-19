@@ -19,17 +19,17 @@
 	<tr><th colspan="2">Interfaces</th></tr>
 	<tr>
 		<td><pre>
-public interface IMyClass
+public interface IMyInterface
 {
-	void MyInstanceSubRoutine(string text);
-	string MyInstanceFunction(string text);
+    void MyInstanceSubRoutine(string text);
+    string MyInstanceFunction(string text);
 }
 		</pre></td>
 		<td><pre>
-@protocol IMyClass
+@protocol MyProtocol
 
--(void)MyInstanceSubRoutine:(NSString*)text;
--(NSString*)MyInstanceFunction:(NSString*)text;
+- (void)myInstanceSubRoutine:(NSString *)text;
+- (NSString *)myInstanceFunction:(NSString *)text;
 
 @end
 		</pre></td>
@@ -43,41 +43,42 @@ public interface IMyClass
 	<tr><th colspan="2">Classes</th></tr>
 	<tr>
 		<td rowspan="2"><pre>
-public class MyClass : IMyClass
+public class MyClass : IMyInterface
 {
-	public int MyInt { get; set; }
-	
-	public MyClass(int myInt)
-	{
-		this.MyInt = myInt;
-	}
-	
-	public void MyInstanceSubRoutine(string text)
-	{
-		var test = this.MyInstanceFunction(text);
-	}
-	
-	public string MyInstanceFunction(string text)
-	{
-		return text;
-	}
-	
-	public static string MyStaticFunction(string text)
-	{
-		return text;
-	}
+    public int MyInt { get; set; }
+    
+    public MyClass(int myInt)
+    {
+        this.MyInt = myInt;
+    }
+    
+    public void MyInstanceSubRoutine(string text)
+    {
+        var test = this.MyInstanceFunction(text);
+    }
+    
+    public string MyInstanceFunction(string text)
+    {
+        return text;
+    }
+    
+    public static string MyStaticFunction(string text)
+    {
+        return text;
+    }
 }
 		</pre></td>
 		<td><pre>
-#import "IMyClass.h"
+#import "MyProtocol.h"
 
-@interface MyClass : NSObject&lt;IMyClass&gt;
+@interface MyClass : NSObject&lt;MyProtocol&gt;
 
-@property NSNumber* myInt;
+@property int myInt;
 
--(void)MyInstanceSubRoutine:(NSString*)text;
--(NSString*)MyInstanceFunction:(NSString*)text;
-+(NSString*)MyStaticFunction:(NSString*)text;
+- (id)initWithMyInt:(int)myInt
+- (void)myInstanceSubRoutine:(NSString *)text;
+- (NSString *)myInstanceFunction:(NSString *)text;
++ (NSString *)myStaticFunction:(NSString *)text;
 
 @end
 		</pre></td>
@@ -88,25 +89,27 @@ public class MyClass : IMyClass
 
 @implementation MyClass
 
-@synthesize myInt;
-
--(id)initWithMyInt:(NSNumber*)myInt{
-    if ( self = [super init] ) {
+- (id)initWithMyInt:(int)myInt
+{
+    if (self = [super init]) {
         self.myInt = myInt;
     }
     return self;
 }
 
--(void)MyInstanceSubRoutine:(NSString*)text;{
-	NSString* test = [self MyInstanceFunction:text];
+- (void)myInstanceSubRoutine:(NSString *)text
+{
+    NSString *test = [self myInstanceFunction:text];
 }
 
--(NSString*)MyInstanceFunction:(NSString*)text{
-	// Do something
+- (NSString *)myInstanceFunction:(NSString *)text
+{
+    // Do something
 }
 
-+(NSString*)MyStaticFunction:(NSString*)text{
-	// Do something
++ (NSString *)myStaticFunction:(NSString *)text
+{
+    // Do something
 }
 
 @end
